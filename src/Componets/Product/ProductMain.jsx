@@ -22,7 +22,7 @@ function ProductMain(props) {
     useEffect(()=> {
        (async () => {
            try{
-               const {data, pagination} = await productApi.getAll(filters)
+               const {data, pagination} = await productApi.getAll()
                setProductList(data)
                console.log({data, pagination})
                setPagination(pagination)

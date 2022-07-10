@@ -35,6 +35,10 @@ const productApi = {
     remove(id) {
         const url =  `/products/${id}`;
         return axiosClient.delete(url)
+    },
+    async search(string){
+        const response = await axiosClient.post("/Product/search", string)
+        return response
     }
 };
 export default productApi
