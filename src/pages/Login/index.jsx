@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SignIn from './components/SignIn';
 
 Login.propTypes = {
     
@@ -8,7 +9,7 @@ Login.propTypes = {
 function Login(props) {
     return (
         <div>
-            This is login
+            <SignIn/>
         </div>
     );
 }

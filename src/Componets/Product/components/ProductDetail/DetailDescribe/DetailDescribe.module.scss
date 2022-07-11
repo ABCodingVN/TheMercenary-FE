@@ -1,0 +1,29 @@
+.Describe {
+    margin-bottom: 16px;
+    border-radius: 4px;
+    background-color: rgb(255, 255, 255);
+    & h2 {
+        color: rgb(51, 51, 51);
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 32px;
+        padding: 8px 16px;
+        text-transform: capitalize;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0px;
+    }
+}
+.Content {
+    padding: 0px 16px 16px;
+    display: inline-block;
+    color: rgb(36, 36, 36);
+    line-height: 21px;
+    text-align: justify;
+    border-radius: 4px;
+    & p {
+        margin-top: 5px;
+        margin-bottom: 12px;
+    }
+}

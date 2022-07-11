@@ -1,31 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import  { Box, Typography } from '@material-ui/core'
+import Styles from './Product.module.scss';
+import { useHistory } from 'react-router-dom';
 Product.propTypes = {
-    product:PropTypes.object,
+    product: PropTypes.object,
 };
 
-function Product({product}) {
+function Product({ product }) {
+    const history = useHistory();
+    const handleDetailPageClick = () => {
+        history.push(`product/${product.ProductId}`);
+        console.log(product);
+    };
+    const ImageUrl = product.ImageURL;
     return (
-        <Box padding={3}>
-           <Box>
-                <img
-                src={product.ImageURL}
-                alt=''
-                height='200px'
-            />
-           </Box>
-           <Box sx={{display:'flex',justifyContent:'center'}}>
-
-                <Typography variant='body2' >{product.name}</Typography>
-                <Typography variant='body2'>
-                    <Box component="span" fontSize="16px" fontWeight="bold" mr={1}>
-                    {new Intl.NumberFormat('vi-VN', {style:'currency', currency:'VND'}).format(product.Price)}
-                    </Box>
-                    {product.Quantity >0 ? `-${product.Quantity}%` : ''}
-                </Typography>
-           </Box>
-        </Box>
+        <div className={Styles.Home} onClick={handleDetailPageClick}>
+            <div className={Styles.Content}>
+                <span className={Styles.Span}>
+                    <div>
+                        <div className={Styles.Thumbnail}>
+                            <img src={ImageUrl} alt="" height={230} width={250} />
+                        </div>
+                        <div className={Styles.Info}>{product.name}</div>
+                        <div className={Styles.Price}>
+                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+                                product.Price,
+                            )}
+                            {product.Quantity > 0 ? `-${product.Quantity}%` : ''}
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </div>
     );
 }
 
