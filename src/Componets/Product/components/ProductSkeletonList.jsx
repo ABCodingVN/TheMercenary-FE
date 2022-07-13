@@ -2,31 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Grid } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
-
-ProductSkeletonList.propTypes = {
-    length : PropTypes.number,
-
+ProductSkeletonList.prototype = {
+    length: PropTypes.number,
+};
+ProductSkeletonList.defaultProps = {
+    length: 30,
 };
 
-ProductSkeletonList.defaultProps = {
-    length:3
-}
-
-function ProductSkeletonList({length}) {
+function ProductSkeletonList({ length }) {
     return (
-            <Box>
-                <Grid container>
-                    {Array.from(new Array(length)).map((x, index) => (
-                        <Grid item key={index} xs={12} sm={6} md={4} lg={5}>
-                            <Box padding={1}>
-                                <Skeleton variant='rect' width="100%" height={200}></Skeleton>
-                                <Skeleton width="60%" />
-                            </Box>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
-        
+        <Box sx={{ my: 5 }}>
+            <Grid container>
+                {Array.from(new Array(length)).map((x, index) => (
+                    <Grid item key={index}>
+                        <Box padding={1}>
+                            <Skeleton variant="rect" width={230} height={180}></Skeleton>
+                            <Skeleton width="70%" />
+                        </Box>
+                    </Grid>
+                ))}
+            </Grid>
+        </Box>
     );
 }
 
