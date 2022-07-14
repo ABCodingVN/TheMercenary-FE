@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import Header from './Componets/Header/Header';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/index';
+import OTPBox from './pages/Login/components/OTP/Otp';
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
     <Switch>
     <Route path={"/"} component= {Login} exact /> 
     <Route path={"/home"} component={Home} exact /> 
+    <Route path={"/otp"} component={OTPBox} exact /> 
     </Switch>
 
    

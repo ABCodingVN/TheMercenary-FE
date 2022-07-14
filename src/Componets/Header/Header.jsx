@@ -62,16 +62,16 @@ export default function Header() {
 
                 }}
                     type="text" />
-                <BsSearch />
+                {/* <BsSearch /> */}
             </div>
             <div className={Styles.Login}>
-                <FaUserCircle />
+                {/* <FaUserCircle /> */}
                 <Link to="/login">
                     <p>Đăng nhập/Đăng ký</p>
                 </Link>
             </div>
             <div className={Styles.Cart}>
-                <AiOutlineShoppingCart /> <p> Giỏ hàng</p>
+                {/* <AiOutlineShoppingCart /> <p> Giỏ hàng</p> */}
             </div>
         </div>
     )
