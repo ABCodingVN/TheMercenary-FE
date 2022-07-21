@@ -5,6 +5,7 @@ import '../../pages/Login/Login.css';
 import imgTiki from '../../Image/Tiki.jpg';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { getUser, loginUser } from '../../api/login';
+import { OtpAPI } from '../../api/login';
 // import ProductList from "src/Componets/Product/components/ProductList";
 // import { useNavigate } from "react-router-dom";
 import Home from '../../pages/Home/Home';
@@ -77,7 +78,8 @@ function Login() {
         handleClick();
     };
 
-    const regbyphonenumber = () => {
+    const regbyphonenumber = async() => {
+        const data = await OtpAPI(phonenumber);
         history.push('/otp');
     };
 

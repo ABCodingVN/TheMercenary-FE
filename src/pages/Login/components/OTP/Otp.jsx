@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Otp.css";
 import imgTiki from "../../../../../src/Image/Tiki.jpg";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { Route, useHistory } from 'react-router-dom';
+import { OtpAPI } from '../../../../api/login';
 const OTPBox = () => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
+  
+  const history = useHistory()
+
+  const regform = () => {
+    history.push('/dangky');
+};
+
+
 
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return false;
@@ -42,7 +52,7 @@ const OTPBox = () => {
               </div>
               <button
                 className="btn btn-danger"
-                onClick={(e) => alert("Mã OTP đã nhập là: " + otp.join(""))}
+                onClick={regform}
               >
                 Xác minh
               </button>

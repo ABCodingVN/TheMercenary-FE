@@ -13,7 +13,8 @@ import ProductFeature from '../../Componets/Product';
 
 function Home() {
     const {productList} = useContext(Context)
-    console.log(productList)
+    console.log(productList);
+    debugger
     return (
         <>
             <Header />
