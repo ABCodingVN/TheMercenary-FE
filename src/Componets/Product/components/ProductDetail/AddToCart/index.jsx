@@ -1,36 +1,63 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
 import Styles from './AddToCart.module.scss';
-AddToCart.propTypes = {};
+import PropTypes from 'prop-types';
+import QuantityField from '../../../../FormControl/QuantityField';
+import { Button, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-function AddToCart(props) {
+const useStyles = makeStyles((theme) => ({
+    StyleButton: {
+        color: 'rgb(255, 255, 255)',
+        backgroundColor: 'rgb(255, 57, 69)',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: '190px',
+        width: '100%',
+        maxWidth: '220px',
+        height: '48px',
+        fontSize: '15px',
+        lineHeight: '24px',
+        fontWeight: '500',
+        textTransform: 'capitalize',
+        border: ' none',
+        borderRadius: '4px',
+        outline: 'none',
+    },
+}));
+AddToCart.propTypes = {
+    onSubmit: PropTypes.func,
+};
+function AddToCart({ onSubmit = null }) {
+    const classes = useStyles();
+    const form = useForm({
+        defaultValues: {
+            quantity: 1,
+        },
+    });
+    const handleSubmit = async (values) => {
+        if (onSubmit) {
+            await onSubmit(values);
+        }
+    };
+
     return (
         <div className={Styles.AddToCart}>
             <div className={Styles.Quantity}>
                 <div>
                     <p className={Styles.Label}>Số lượng</p>
-                    <div className={Styles.GroupInput}>
-                        <button className={Styles.Dislabel}>
-                            <img
-                                className={Styles.Img}
-                                src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/icons-remove.svg"
-                                alt=""
-                            />
-                        </button>
-                        <input type="text" value="1" className={Styles.Input}></input>
-                        <button className={Styles.Dislabel}>
-                            <img
-                                className={Styles.Img}
-                                src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/icons-remove.svg"
-                                alt=""
-                            />
-                        </button>
-                    </div>
+                    <div className={Styles.GroupInput}></div>
                 </div>
             </div>
-            <div className={Styles.Button}>
-                <button>Chọn mua</button>
-            </div>
+
+            <form onSubmit={form.handleSubmit(handleSubmit)}>
+                <QuantityField name="quantity" label="Quantity" form={form} />
+                <Button type="submit">
+                    <Typography className={classes.StyleButton}>Chọn mua</Typography>
+                </Button>
+            </form>
         </div>
     );
 }

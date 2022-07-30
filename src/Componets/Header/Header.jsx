@@ -1,80 +1,93 @@
-import React from 'react';
-import Styles from './Header.module.scss';
-import Logo from '../../Image/logo.png';
-import Freeship from '../../Image/freeship.png';
-import { Link } from 'react-router-dom';
-import { useContext, useState } from 'react';
-import { useEffect } from 'react';
-import productApi from '../../api/product';
+import React, { useContext, useState } from 'react';
+import { useRef } from 'react';
 import { Context } from '../../Context/Context';
+import Logo from '../../Image/logo.png';
 import Search from '../../Image/search.png';
-import Button from '@material-ui/core/Button';
+import DialogLogin from './Dialog';
+import Styles from './Header.module.scss';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import Badge from '@material-ui/core/Badge';
+import IconButton from '@material-ui/core/IconButton';
+import { useSelector } from 'react-redux';
+import { cartItemsCountSelector } from '../Cart/selectors';
+import { useHistory } from 'react-router-dom';
+function Header(props) {
+    const cartItemsCount = useSelector(cartItemsCountSelector);
 
-export default function Header() {
-    const { setProductList } = useContext(Context)
-    const [search, setSearch] = useState({
-        inputSearch: ""
-    })
-    useEffect(() => {
-        const fetch = async () => {
-            const data = await productApi.search(search)
-            console.log(data)
-            if (data.success) setProductList(data)
-            else setProductList([])
-        }
-        fetch()
-    }, [search])
-
+    const history = useHistory();
+    const inputRef = useRef();
+    const { setSearch, searchString, setSearchString } = useContext(Context);
+    const handleOnChange = (e) => {
+        setSearchString(e.target.value);
+    };
+    const handleSearchClick = () => {
+        setSearch(searchString);
+        setSearchString('');
+        inputRef.current.focus();
+    };
+    const handleCartClickOpen = () => {
+        history.push('/cart');
+    };
     return (
-        <div className={Styles.Header}>
+        <div className={Styles.Main}>
             <div className={Styles.Wrapper}>
                 <div className={Styles.Header}>
                     <div className={Styles.Middle}>
                         <div className={Styles.Logo}>
                             <img src={Logo} alt="logo" />
+                            <div className={Styles.FreeTiki}>
+                                <img
+                                    src="https://salt.tikicdn.com/ts/upload/e5/1d/22/61ff572362f08ead7f34ce410a4a6f96.png"
+                                    alt=""
+                                />
+                            </div>
                         </div>
                         <div className={Styles.FormSearch}>
                             <div className={Styles.Search}>
-                                <input className={Styles.Input} type="text" placeholder="Tìm kiếm sản phẩm"></input>
-                                <button className={Styles.Button}>
+                                <input
+                                    ref={inputRef}
+                                    className={Styles.Input}
+                                    type="text"
+                                    placeholder="Tìm kiếm sản phẩm"
+                                    value={searchString}
+                                    onChange={handleOnChange}
+                                    onKeyDown={(e) => {
+                                        if (e.code === 'Enter') {
+                                            setSearch(searchString);
+                                        }
+                                    }}
+                                />
+                                <button className={Styles.Button} onClick={handleSearchClick}>
                                     <img src={Search} alt="serach" />
                                     Tìm kiếm
                                 </button>
-                                <div className={Styles.User}>
-                                    <Button color='inherit'>Login</Button>
-                                </div>
-
                             </div>
                         </div>
                     </div>
+                    <div className={Styles.User}>
+                        <img
+                            className={Styles.ProfileIcon}
+                            src="https://salt.tikicdn.com/ts/upload/67/de/1e/90e54b0a7a59948dd910ba50954c702e.png"
+                            alt=""
+                        />
+
+                        <span className={Styles.UserStyles}>
+                            <DialogLogin />
+                        </span>
+
+                        <span className={Styles.UserStyles}>
+                            <IconButton aria-label="show 4 new mails" color="inherit" onClick={handleCartClickOpen}>
+                                <Badge badgeContent={cartItemsCount} color="secondary">
+                                    <ShoppingCartIcon />
+                                </Badge>
+                            </IconButton>
+                        </span>
+                        <span className={Styles.UserStyles}>Giỏ hàng</span>
+                    </div>
                 </div>
             </div>
-
-            <div className={Styles.Logo}>
-                <img src={Logo} alt="logo" />
-                <img src={Freeship} alt="Freeship" />
-            </div>
-            <div className={Styles.Seaching}>
-                <input onKeyPress={(e) => {
-                    (e.key === "Enter") &&
-                        setSearch({ inputSearch: e.target.value },
-                        );
-
-                }}
-                    type="text" />
-                {/* <BsSearch /> */}
-            </div>
-            <div className={Styles.Login}>
-                {/* <FaUserCircle /> */}
-                <Link to="/login">
-                    <p>Đăng nhập/Đăng ký</p>
-                </Link>
-            </div>
-            <div className={Styles.Cart}>
-                {/* <AiOutlineShoppingCart /> <p> Giỏ hàng</p> */}
-            </div>
         </div>
-    )
+    );
 }
 
-
+export default Header;

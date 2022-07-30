@@ -2,26 +2,24 @@ import React from 'react';
 import Header from '../../Componets/Header/Header';
 import Banner from '../../Componets/Banner/Banner';
 import CategoryItems from '../../Componets/CategoryItems/CategoryItems';
-// import Product from '../../Componets/Product/ProductMain';
-import ProductList from '../../Componets/Product/components/ProductList';
-import { useContext } from 'react';
-import { Context } from '../../Context/Context';
 import ProductFeature from '../../Componets/Product';
-
-
-
+import { Route, Switch } from 'react-router-dom';
+import Footer from '../../Componets/Footer';
+import CartProduct from '../../Componets/Cart';
 
 function Home() {
-    const {productList} = useContext(Context)
-    console.log(productList)
     return (
         <>
             <Header />
             <CategoryItems />
-            <Banner />
-            <ProductList products={productList?.products}/>
+            <Switch>
+                <Route path="/" component={Banner} exact />
+                <Route path="/cart" component={CartProduct} exact />
+            </Switch>
             <ProductFeature />
+            <Footer />
         </>
     );
-    }
+}
+
 export default Home;

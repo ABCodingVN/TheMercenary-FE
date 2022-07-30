@@ -2,39 +2,30 @@ import axiosClient from './axiosClient';
 
 const productApi = {
     async getAll(params) {
-        const newParams = { ...params };
-        newParams._start = !params._page || params._page <= 1 ? 0 : (params._page - 1) * (params._limit || 5);
+        // const result = await axiosClient.get(`/Product/get/${params._page}/${params._limit}`);
+        const result = await axiosClient.get('/Product/all/');
 
-        const productList = await axiosClient.get('/Product/get', { params: newParams });
-        const count = await axiosClient.get('/Product/get/1/10', { params: newParams });
         return {
-            data: productList,
-            pagination: {
-                page: params._page,
-                limit: params._limit,
-                total: count,
-            },
+            data: result?.products || [],
+            // pagination: {
+            //     page: params._page,
+            //     limit: params._limit,
+            //     total: result?.pageTotal,
+            // },
         };
     },
-    get(id) {
-        const url = `/Product/get/${id}`;
-        return axiosClient.get(url);
+    async getLazy(_page, _limit) {
+        const data = await axiosClient.get(`/Product/get/${_page}/${_limit}`);
+        return {
+            data: data.result || [],
+        };
     },
-    add(data) {
-        const url = '/products';
-        return axiosClient.post(url, data);
+    async getBySearch(params) {
+        const result = await axiosClient.post('/Product/search', params);
+
+        return {
+            data: result?.products || [],
+        };
     },
-    update(data) {
-        const url = `/products/${data.id}`;
-        return axiosClient.patch(url, data);
-    },
-    remove(id) {
-        const url =  `/products/${id}`;
-        return axiosClient.delete(url)
-    },
-    async search(string){
-        const response = await axiosClient.post("/Product/search", string)
-        return response
-    }
 };
 export default productApi;

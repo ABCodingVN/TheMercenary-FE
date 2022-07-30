@@ -1,27 +1,31 @@
 import React from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
+import categoryApi from '../../api/category';
 import Styles from './CategoryItems.module.scss';
 
 function CategoryItems(props) {
+    const [itemsCategory, setItemsCategory] = useState([]);
+    useEffect(() => {
+        (async () => {
+            try {
+                const listCategory = await categoryApi.get();
+
+                setItemsCategory(listCategory);
+            } catch (error) {
+                console.log('category error', error);
+            }
+        })();
+    }, []);
+
     return (
         <div className={Styles.Category}>
-            <div className={Styles.Container}>
+            {itemsCategory.categories?.map((items, index) => (
                 <div className={Styles.Slider}>
-                    <a>Thịt, Rau củ</a>
-                    <a>Bách Hóa</a>
-                    <a>Nhà Cửa</a>
-                    <a>Điện Tử</a>
-                    <a>Thiết Bị Số</a>
-                    <a>Điện Thoại</a>
-                    <a>Mẹ & Bé</a>
-                    <a>Làm Đẹp</a>
-                    <a>Gia Dụng</a>
-                    <a>Thời trang nữ</a>
-                    <a>Thời trang nam</a>
-                    <a>Giày nữ</a>
-                    <a>Túi nữ</a>
+                    <li key={items.CategoryId}>{items?.Name}</li>
                 </div>
-            </div>
+            ))}
         </div>
     );
 }

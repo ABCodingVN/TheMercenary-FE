@@ -1,11 +1,14 @@
+.Main {
+    background: rgb(26, 148, 255);
+    z-index: 999;
+    height: 100px;
+}
 .Wrapper {
     width: 1270px;
     padding-left: 15px;
     padding-right: 15px;
     margin-right: auto;
     margin-left: auto;
-    margin-bottom: 15px;
-    background-color: rgb(26, 148, 255);
 }
 .Header {
     display: flex;
@@ -25,19 +28,28 @@
     flex-basis: 190px;
     flex-shrink: 0;
     margin-right: 16px;
+    flex-direction: column;
     & img {
         width: 60px;
         height: 40px;
+    }
+}
+.FreeTiki {
+    & img {
+        width: 83px;
+        height: 12px;
     }
 }
 .FormSearch {
     flex: 1 1 0%;
 }
 .Search {
-    width: 100%;
+    width: 98%;
     display: flex;
-
     box-shadow: rgb(98 98 98 / 50%) 0px 1px 2px 0px;
+}
+.Search input:focus {
+    outline: none;
 }
 .Input {
     border: 0px;
@@ -47,6 +59,7 @@
     flex: 1 1 0%;
     outline: none;
 }
+
 .Button {
     cursor: pointer;
     border: 0px;
@@ -74,10 +87,22 @@
     align-items: center;
     display: flex;
     color: rgb(255, 255, 255);
-    font-size: 15px;
+    font-size: 12px;
     position: relative;
     letter-spacing: 0.7px;
-    width: 162px;
+    width: 230px;
+}
+.ProfileIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: 2px;
+}
+.UserStyles {
+    color: rgb(255, 255, 255);
+    font-weight: 400;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
 }
 .Login {
     white-space: nowrap;
@@ -87,4 +112,7 @@
     text-transform: capitalize;
     font-size: 11px;
     line-height: 16px;
+}
+
+.FreeTiki {
 }
