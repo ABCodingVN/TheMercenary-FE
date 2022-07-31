@@ -1,9 +1,10 @@
-import userReducer from '../pages/Login/userSlice'
-const { configureStore } = require("@reduxjs/toolkit");
+import cartReducer from '../Componets/Cart/cartSlice';
+const { configureStore } = require('@reduxjs/toolkit');
+
 const rootReducer = {
-    user : userReducer
-}
+    cart: cartReducer,
+};
 const store = configureStore({
-    reducer : rootReducer
-})
+    reducer: rootReducer,
+});
 export default store;
