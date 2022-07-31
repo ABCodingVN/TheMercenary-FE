@@ -9,7 +9,7 @@ function ProductFeature(props) {
         <div>
             <Switch>
                 <Route path="/" component={ProductMain} exact />
-                <Route path="/product/:productId" component={ProductDetail} exact />
+                <Route path="/detail/:deatailId" component={ProductDetail} exact />
             </Switch>
         </div>
     );

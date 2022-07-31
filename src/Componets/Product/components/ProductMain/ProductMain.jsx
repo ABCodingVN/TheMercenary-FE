@@ -1,73 +1,58 @@
-import React, { useEffect, useState } from 'react';
-
-import ProductList from '../ProductList';
-import { Pagination } from '@material-ui/lab';
-import ProductSort from '../ProductSort';
-import Styles from './ProductMain.module.scss';
-import { makeStyles } from '@material-ui/core';
+import React, { useContext, useEffect, useState } from 'react';
 import productApi from '../../../../api/product';
+import { Context } from '../../../../Context/Context';
+import Product from '../Product';
 import ProductSkeletonList from '../ProductSkeletonList';
-const useStyles = makeStyles((theme) => ({
-    pagination: {
-        display: 'flex',
-        flexFlow: 'row nowrap',
-        justifyContent: 'center',
-    },
-}));
+import Styles from './ProductMain.module.scss';
+import ProductNotFound from './ProductNotFound';
+
 function ProductMain(props) {
-    const classes = useStyles();
-    const [productList, setProductList] = useState([]);
-    const [pagination, setPagination] = useState({
-        limit: 4,
-        total: 10,
-        page: 1,
-    });
-    const [loading, setLoading] = useState(true);
-    const [filters, setFilters] = useState({
+    const { productList, setProductList, search } = useContext(Context);
+    const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState({
         _page: 1,
-        _limit: 5,
-        _sort: 'salePrice:ASC',
+        _limit: 30,
     });
+
     useEffect(() => {
-        (async () => {
+        const fetch = async () => {
             try {
-                const { data, pagination } = await productApi.getAll(filters);
-                setProductList(data);
-                console.log({ data, pagination });
-                setPagination(pagination);
+                if (search) {
+                    const { data } = await productApi.getBySearch({ inputSearch: search });
+                    setProductList(data);
+                } else {
+                    const { data } = await productApi.getLazy(page._page, page._limit);
+                    setProductList([...productList, ...data]);
+                }
             } catch (error) {
                 console.log('Failed', error);
             }
-            setLoading(false);
-        })();
-    }, [filters]);
-    const handlePageOnchange = (e, page) => {
-        setFilters((prevFiltes) => ({
-            ...prevFiltes,
-            _page: page,
-        }));
-    };
-    const handleSortchange = (newSort) => {
-        setFilters((prevFiltes) => ({
-            ...prevFiltes,
-            _sort: newSort,
-        }));
+        };
+        fetch();
+    }, [page, search]);
+    const handleClickButton = () => {
+        setPage({ ...page, _page: page._page + 1 });
     };
     return (
-        <div className={Styles.Container}>
-            <div className={Styles.ContentWrap}>
-                <div className={Styles.ListPage}>
-                    <ProductSort currentSort={filters._sort} onChange={handleSortchange} />
-                    {/* {loading ? <ProductSkeletonList length={3} /> : <ProductList data={productList} />} */}
-                    {loading ? <ProductSkeletonList /> : <ProductList data={productList} />}
-                    <Pagination
-                        className={classes.pagination}
-                        color="primary"
-                        count={Math.ceil(pagination.total / pagination.limit)}
-                        page={pagination.page}
-                        onChange={handlePageOnchange}
-                    ></Pagination>
+        <div className={Styles.Main}>
+            {loading ? (
+                <ProductSkeletonList />
+            ) : (
+                <div className={Styles.LayOut}>
+                    <div className={Styles.Container}>
+                        {productList?.map((product) => (
+                            <div className={Styles.Items} item key={product.ProductId}>
+                                <Product product={product} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
+            )}
+            {productList.length === 0 && <ProductNotFound />}
+            <div className={Styles.ButtonLayOut}>
+                <button className={Styles.ButtonStyles} onClick={handleClickButton}>
+                    Xem Thêm
+                </button>
             </div>
         </div>
     );

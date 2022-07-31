@@ -1,11 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Styles from './DetailBuy.module.scss';
 import AddToCart from '../AddToCart';
 import DeliveryAddress from './DeliveryAddress';
-DetailBuy.propTypes = {};
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../../../Cart/cartSlice';
 
-function DetailBuy(props) {
+function DetailBuy({ detailItems }) {
+    const dispatch = useDispatch();
+    const handleAddToCart = (formValues) => {
+        const action = addToCart({
+            id: detailItems.detail?.product.ProductId,
+            detailItems,
+            quantity: formValues.quantity,
+        });
+        console.log('action', action);
+        dispatch(action);
+    };
     return (
         <div className={Styles.DiscountCode}>
             <div className={Styles.Text}>9 mã giảm giá</div>
@@ -18,11 +28,15 @@ function DetailBuy(props) {
             <div className={Styles.DeliveryZone}>
                 <div className={Styles.DataviewId}>
                     <div className={Styles.Address}>
-                        <span>Giao đến</span>
+                        <div className={Styles.StylesSpan}>
+                            <span>Giao đến</span>
+                        </div>
                         <span>
                             <DeliveryAddress />
                         </span>
-                        <span className={Styles.AddressChange}>Đổi địa chỉ</span>
+                        <div className={Styles.StylesSpan}>
+                            <span className={Styles.AddressChange}>Đổi địa chỉ</span>
+                        </div>
                     </div>
                 </div>
                 <div className={Styles.DeliveryZoneInner}>
@@ -43,7 +57,7 @@ function DetailBuy(props) {
                 </div>
             </div>
 
-            <AddToCart />
+            <AddToCart onSubmit={handleAddToCart} />
         </div>
     );
 }
